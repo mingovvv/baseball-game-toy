@@ -6,45 +6,54 @@ public class Attack {
 
     public void start() {
         System.out.println("머릿속으로 서로 중복되지 않는 1~9까지의 세자리 숫자를 생각해주세요.");
-        System.out.println("제가 사용자님의 마춰보겠습니다.");
+        Util.delayMs(1000);
+        System.out.println("제가 당신의 정답을 마춰보겠습니다.");
+        Util.delayMs(1000);
         System.out.println("생각은 다 끝나셨나요?");
-        System.out.println("그럼 바로 시작하겠습니다.");
+        Util.delayMs(1000);
+        System.out.println("그럼 바로 시작합니다.");
+        Util.delayMs(1000);
 
-        int index = 1;
-        int[] random = new int[3];
-        for (int i = 0; i < random.length; i++) {
-            random[i] = (int) (Math.random() * 9 + 1);
+        // 시도 횟수
+        int cnt = 1;
 
-            // 중복제거
-            for (int j = 0; j < i; j++) {
-                if (random[i] == random[j]) {
-                    i--;
-                    break;
-                }
-            }
+        // 경우의 수 생성
+        Algorithm.createValues();
 
-        }
-
-        System.out.println(index + "번째 저의 도전 숫자는 : " + Arrays.toString(random) + "입니다");
-        System.out.println("스트라이크는 s, 볼은 b로 표현해주세요.");
-        System.out.println("example 1. : 2s1b (2스트라이크 1볼)");
-        System.out.println("example 2. : 3b (1볼)");
+        int value = Algorithm.getRandomValue();
 
         while (true) {
+
+            System.out.println(cnt + "번째 AI의 정답 숫자는 : " + value + "입니다. 정답인가요?");
+            System.out.println("스트라이크는 s, 볼은 b, 아웃은 o로 표현해주세요.");
+            System.out.println();
+            System.out.println("example 1. : 2s1b (2스트라이크, 1볼)");
+            System.out.println("example 2. : 3b (3볼)");
+            System.out.println("example 3. : o (아웃, 일치값 없음)");
+
             String reply = sc.next();
-            if (reply.length() != 4 || reply.length() != 2) {
-                if (reply.length() == 4 && reply.matches("^[1-2][sSbB][1-2][sSbB]$")) {
-                    reply.charAt(1);
-                } else if (reply.length() == 2 && reply.matches("^[1-2][sSbB]$")) {
 
-                } else {
-                    System.out.println("잘못 입력하셨어요. 다시 선택해주세요.");
-                }
-
+            if (reply.length() == 4 && reply.matches("^[1-2][sSbB][1-2][sSbB]$")) {
+                // 후보군 제외
+                Algorithm.removeValues(value, reply);
+                cnt++;
+                value = Algorithm.getRandomValue();
+            } else if ("O".equalsIgnoreCase(reply)) {
+                // 후보군 제외
+                Algorithm.removeValues(value, reply);
+                cnt++;
+                value = Algorithm.getRandomValue();
+            } else if (reply.length() == 2 && reply.matches("^[3][sS]$")) {
+                System.out.println(cnt + "번만에 맞췄네요. :) ");
+                break;
+            } else if (reply.length() == 2 && reply.matches("^[1-3][sSbB]$")) {
+                // 후보군 제외
+                Algorithm.removeValues(value, reply);
+                cnt++;
+                value = Algorithm.getRandomValue();
             } else {
-                System.out.println("잘못 입력하셨어요. 다시 선택해주세요.");
+                System.out.println("잘못 입력 하셨습니다. 다시 정확하게 입력해주세요.");
             }
-
         }
 
     }
