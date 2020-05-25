@@ -35,6 +35,16 @@ public class Test {
 //        int cnum = aa.charAt(1);
 //        System.out.println(cnum - '0');
 //        System.out.println(Character.getNumericValue(aa.charAt(1)));
-        System.out.println("1s".matches("^[3][sS]$"));
+//        System.out.println("1s".matches("^[3][sS]$"));
+        int[] a = new int[]{0,0,0};
+
+        for (int i = 0; i < a.length ; i++) {
+            a[i] = (int) (Math.random() * 9 + 1);
+            if(i != 0 && a[i] == a[i-1]) {
+                i--;
+            }
+        }
+        System.out.println(Arrays.toString(a));
+
     }
 }

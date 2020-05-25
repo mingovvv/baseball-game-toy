@@ -30,6 +30,8 @@ public class BaseBallMain {
                     Defense d = new Defense();
                     System.out.println("방어을 선택 하셨습니다. 그럼 제가 문제를 내보도록 하겠습니다.");
                     Util.delayMs(1000);
+                    Defense defense = new Defense();
+                    defense.start();
                     break loop;
                 default:
                     System.out.println("잘못 입력 하셨습니다. 다시 선택해주세요.");

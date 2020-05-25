@@ -18,7 +18,7 @@ public class Algorithm {
     }
 
     public static int getRandomValue() {
-        return list.size() != 0 ? list.get((int)(Math.random()*list.size())) : getError("당신이 준 단서( s, b, o) 카운팅이 올바르지 않습니다. 모든 경우의 수를 따져봐도 정답이 없거든요...");
+        return list.size() != 0 ? list.get((int) (Math.random() * list.size())) : getError("당신이 준 단서( s, b, o) 카운팅이 올바르지 않습니다. 모든 경우의 수를 따져봐도 정답이 없거든요...");
     }
 
     public static void removeValues(int value, String reply) {
@@ -33,25 +33,25 @@ public class Algorithm {
 
         if (reply.length() == 4) {
             // 스트라이크 && 볼
-            strike = reply.charAt(reply.toUpperCase().indexOf("S")-1) - '0';
-            ball = reply.charAt(reply.toUpperCase().indexOf("B")-1) - '0';
+            strike = reply.charAt(reply.toUpperCase().indexOf("S") - 1) - '0';
+            ball = reply.charAt(reply.toUpperCase().indexOf("B") - 1) - '0';
 
-             int[] comValue = gerArray(value);
+            int[] comValue = gerArray(value);
 
-            for (int i=0; i<list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 int[] listValue = gerArray(list.get(i));
 
                 for (int j = 0; j < listValue.length; j++) {
                     // strike 확인
-                    if(listValue[j] == comValue[j]) {
-                    matchedStrike++;
-                    // ball 확인
-                    } else if(String.valueOf(value).contains(String.valueOf(listValue[j]))){
+                    if (listValue[j] == comValue[j]) {
+                        matchedStrike++;
+                        // ball 확인
+                    } else if (String.valueOf(value).contains(String.valueOf(listValue[j]))) {
                         matchedBall++;
                     }
                 }
 
-                if(strike == matchedStrike && ball == matchedBall) {
+                if (strike == matchedStrike && ball == matchedBall) {
                     editList.add(list.get(i));
                 }
                 matchedStrike = 0;
@@ -61,7 +61,7 @@ public class Algorithm {
             list.clear();
             list.addAll(editList);
 
-        } else if (reply.length() == 2){
+        } else if (reply.length() == 2) {
             // 스트라이크 || 볼
             if (reply.toUpperCase().contains("S")) {
                 strike = reply.charAt(reply.toUpperCase().indexOf("S") - 1) - '0';
@@ -71,20 +71,20 @@ public class Algorithm {
 
             int[] comValue = gerArray(value);
 
-            for (int i=0; i<list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 int[] listValue = gerArray(list.get(i));
 
                 for (int j = 0; j < listValue.length; j++) {
                     // strike 확인
-                    if(listValue[j] == comValue[j]) {
+                    if (listValue[j] == comValue[j]) {
                         matchedStrike++;
                         // ball 확인
-                    } else if(String.valueOf(value).contains(String.valueOf(listValue[j]))){
+                    } else if (String.valueOf(value).contains(String.valueOf(listValue[j]))) {
                         matchedBall++;
                     }
                 }
 
-                if(strike == matchedStrike && ball == matchedBall) {
+                if (strike == matchedStrike && ball == matchedBall) {
                     editList.add(list.get(i));
                 }
                 matchedStrike = 0;
@@ -94,16 +94,16 @@ public class Algorithm {
             list.clear();
             list.addAll(editList);
 
-        } else if (reply.length() == 1){
+        } else if (reply.length() == 1) {
             List<Integer> deleteList = new ArrayList<>();
             // 아웃
             int[] comValue = gerArray(value);
 
-            for (int i=0; i<list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 int[] listValue = gerArray(list.get(i));
 
                 for (int j = 0; j < listValue.length; j++) {
-                    if(String.valueOf(value).contains(String.valueOf(listValue[j]))){
+                    if (String.valueOf(value).contains(String.valueOf(listValue[j]))) {
                         deleteList.add(list.get(i));
                         break;
                     }
@@ -118,11 +118,11 @@ public class Algorithm {
     private static int[] gerArray(Integer value) {
         int[] num = new int[3];
 
-        num[0] = value/100;
-        value = value%100;
-        num[1] = value/10;
-        value = value%10;
-        num[2] = value/1;
+        num[0] = value / 100;
+        value = value % 100;
+        num[1] = value / 10;
+        value = value % 10;
+        num[2] = value / 1;
 
         return num;
     }
@@ -132,4 +132,38 @@ public class Algorithm {
         System.exit(0);
         return 9999;
     }
+
+    public static int[] createRandomValue() {
+        int[] num = new int[]{0, 0, 0};
+
+        for (int i = 0; i < num.length; i++) {
+            num[i] = (int) (Math.random() * 9 + 1);
+            if (i != 0 && num[i] == num[i - 1]) {
+                i--;
+            }
+        }
+        return num;
+    }
+
+    public static String compareValue(String reply, int[] comNum) {
+        int[] userNum = gerArray(Integer.valueOf(reply));
+        int strike = 0;
+        int ball = 0;
+        int out = 0;
+
+        for (int i = 0; i < userNum.length; i++) {
+            if (userNum[i] == comNum[i]) {
+                strike++;
+            } else if (reply.contains(String.valueOf(comNum[i]))) {
+                ball++;
+            }
+        }
+
+        if(strike == ball && ball == 0) {
+            out++;
+        }
+
+        return String.valueOf(strike)+String.valueOf(ball)+String.valueOf(out);
+    }
 }
+
