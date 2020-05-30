@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Algorithm {
@@ -137,16 +138,18 @@ public class Algorithm {
         int[] num = new int[]{0, 0, 0};
 
         for (int i = 0; i < num.length; i++) {
-            num[i] = (int) (Math.random() * 9 + 1);
-            if (i != 0 && num[i] == num[i - 1]) {
+            int test = (int) (Math.random() * 9 + 1);
+            if (i != 0 && Arrays.toString(num).contains(String.valueOf(test))) {
                 i--;
+            } else {
+                num[i] = test;
             }
         }
         return num;
     }
 
-    public static String compareValue(String reply, int[] comNum) {
-        int[] userNum = gerArray(Integer.valueOf(reply));
+    public static String compareValue(String myAnswer, int[] comNum) {
+        int[] userNum = gerArray(Integer.valueOf(myAnswer));
         int strike = 0;
         int ball = 0;
         int out = 0;
@@ -154,7 +157,7 @@ public class Algorithm {
         for (int i = 0; i < userNum.length; i++) {
             if (userNum[i] == comNum[i]) {
                 strike++;
-            } else if (reply.contains(String.valueOf(comNum[i]))) {
+            } else if (myAnswer.contains(String.valueOf(comNum[i]))) {
                 ball++;
             }
         }
